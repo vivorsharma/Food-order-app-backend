@@ -20,7 +20,6 @@ const getMyRestaurant = async (req: Request, res: Response) => {
 
 const createMyRestaurant = async (req: Request, res: Response) => {
     try {
-        console.log(req.file)
         const existingRestaurant = await Restaurant.findOne({ user: req.userId });
 
         if (existingRestaurant) {
@@ -50,7 +49,6 @@ const updateMyRestaurant = async (req: Request, res: Response) => {
         const restaurant = await Restaurant.findOne({
             user: req.userId
         })
-
         if (!restaurant) {
             return res.status(404).json({ message: "restaurant not found" })
         }
@@ -59,10 +57,11 @@ const updateMyRestaurant = async (req: Request, res: Response) => {
             restaurant.city = req.body.city,
             restaurant.country = req.body.country,
             restaurant.deliveryPrice = req.body.deliveryPrice,
-            restaurant.estimatedDeliveryTime = req.body.estimatedDeliveryTime.
-                restaurant.cuisines = req.body.cuisines,
+            restaurant.estimatedDeliveryTime = req.body.estimatedDeliveryTime,
+            restaurant.cuisines = req.body?.cuisines,
             restaurant.menuItems = req.body.menuItems,
             restaurant.lastUpdated = new Date()
+
 
         if (req.file) {
             const imageUrl = await uploadImage(req.file as Express.Multer.File)
